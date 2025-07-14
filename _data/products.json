@@ -1,0 +1,252 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Instagram Seguidores",
+      "icon": "fab fa-instagram",
+      "category": "instagram",
+      "description": "Aumente seu número de seguidores no Instagram com perfis reais e ativos.",
+      "variations": [
+        { "name": "Seguidores Brasileiros Sem Reposição", "price": 25.82, "details": "Entrega gradual 24-72h | Perfis brasileiros reais | Alta qualidade", "important": "Não inclui reposição de perdas naturais após 30 dias" },
+        { "name": "Seguidores Brasileiros Com Reposição (30 dias)", "price": 25.08, "details": "Entrega gradual 24-72h | Perfis brasileiros reais | Reposição garantida por 30 dias", "important": "Repomos perdas naturais dentro do período de 30 dias" },
+        { "name": "Seguidores Mundiais Sem Reposição", "price": 13.96, "details": "Entrega rápida 12-48h | Perfis internacionais ativos | Diversos países", "important": "Melhor para contas com conteúdo global (inglês/espanhol)" },
+        { "name": "Seguidores Mundiais Com Reposição (30 dias)", "price": 16.70, "details": "Entrega rápida 12-48h | Perfis internacionais | Reposição garantida por 30 dias", "important": "Garantia de reposição para perdas dentro de 30 dias" }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Instagram Curtidas",
+      "icon": "fas fa-heart",
+      "category": "instagram",
+      "description": "Aumente o engajamento dos seus posts com curtidas reais e de alta qualidade.",
+      "variations": [
+        { "name": "Curtidas Brasileiras c/ Reposição (30 dias)", "price": 2.45, "details": "Curtidas de perfis reais brasileiros | Entrega em 1-6h | Reposição garantida por 30 dias", "important": "Funciona apenas em posts públicos | Mínimo 100 curtidas por pedido" },
+        { "name": "Curtidas Mundiais s/ Reposição", "price": 0.11, "details": "Curtidas internacionais | Entrega super rápida (0-2h) | Alta velocidade", "important": "Melhor para contas internacionais | Não inclui reposição após queda" },
+        { "name": "Curtidas Mundiais c/ Reposição (365 dias)", "price": 0.17, "details": "Curtidas globais | Entrega rápida (1-4h) | Reposição por 1 ano completo", "important": "Garantia mais longa do mercado | Perfis ativos de diversos países" }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Instagram Comentários",
+      "icon": "fas fa-comment",
+      "category": "instagram",
+      "description": "Aumente o engajamento dos seus posts com comentários personalizados ou prontos.",
+      "variations": [
+        { "name": "Comentários Personalizados Brasileiros (Masculino)", "price": 368.30, "details": "Comentários masculinos personalizados | Perfis brasileiros reais | Entrega em 24-48h", "important": "Fornecer texto base para os comentários | Mínimo 10 comentários por pedido" },
+        { "name": "Comentários Personalizados Brasileiros (Feminino)", "price": 368.30, "details": "Comentários femininos personalizados | Perfis brasileiros reais | Entrega em 24-48h", "important": "Fornecer texto base para os comentários | Mínimo 10 comentários por pedido" },
+        { "name": "Comentários Personalizados Brasileiros (Misturado)", "price": 348.00, "details": "Comentários mistos personalizados | Perfis brasileiros reais | Entrega em 24-48h", "important": "Fornecer texto base para os comentários | Mínimo 10 comentários por pedido" },
+        { "name": "Comentários Personalizados Mundiais", "price": 52.74, "details": "Comentários personalizados internacionais | Diversos países | Entrega em 24-72h", "important": "Fornecer texto em inglês/espanhol | Pode incluir perfis de qualquer país" },
+        { "name": "Comentários Prontos Mundiais", "price": 163.54, "details": "Comentários genéricos internacionais | Entrega rápida 12-24h | Diversos países", "important": "Comentários em inglês padrão | Não personalizáveis" },
+        { "name": "Comentários Prontos Brasileiros", "price": 345.00, "details": "Comentários genéricos em português | Perfis brasileiros | Entrega em 24-48h", "important": "Comentários padrão em português | Não personalizáveis" }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Instagram Visualizações",
+      "icon": "fas fa-eye",
+      "category": "instagram",
+      "description": "Aumente as visualizações dos seus vídeos ou stories no Instagram com engajamento real.",
+      "variations": [
+        { "name": "Visualizações em Vídeos", "price": 0.06, "details": "Visualizações em vídeos | Entrega em 1-6h", "important": "Funciona apenas em vídeos públicos | Mínimo 100 visualizações por pedido" },
+        { "name": "Visualizações em Stories", "price": 1.72, "details": "Visualizações em stories | Entrega em 1-6h", "important": "Funciona apenas em stories públicos | Mínimo 100 visualizações por pedido" }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "TikTok Seguidores",
+      "icon": "fab fa-tiktok",
+      "category": "tiktok",
+      "description": "Aumente seu número de seguidores no TikTok com perfis reais e ativos.",
+      "variations": [
+        { "name": "Seguidores Brasileiros", "price": 18.16, "details": "Entrega rápida 24-72h | Perfis brasileiros reais | Alta qualidade", "important": "Sem reposição automática" },
+        { "name": "Seguidores Brasileiros c/ Reposição (30 dias)", "price": 18.10, "details": "Entrega gradual 24-72h | Perfis brasileiros reais | Reposição garantida por 30 dias", "important": "Repomos perdas naturais dentro do período de 30 dias" },
+        { "name": "Seguidores Mundiais", "price": 17.74, "details": "Entrega rápida 12-48h | Perfis internacionais ativos | Diversos países", "important": "Melhor para contas com conteúdo global (inglês/espanhol)" },
+        { "name": "Seguidores Mundiais c/ Reposição (30 dias)", "price": 28.24, "details": "Entrega rápida 12-48h | Perfis internacionais | Reposição garantida por 30 dias", "important": "Garantia de reposição para perdas dentro de 30 dias" }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "TikTok Visualizações",
+      "icon": "fas fa-eye",
+      "category": "tiktok",
+      "description": "Aumente as visualizações dos seus vídeos no TikTok com engajamento real.",
+      "variations": [
+        { "name": "Visualizações Mundiais", "price": 0.04, "details": "Visualizações internacionais | Entrega em 1-6h | Alta velocidade", "important": "Funciona apenas em vídeos públicos | Mínimo 100 visualizações por pedido" },
+        { "name": "Visualizações Brasileiras", "price": 0.04, "details": "Visualizações de perfis reais brasileiros | Entrega em 1-6h | Alta velocidade", "important": "Funciona apenas em vídeos públicos | Mínimo 100 visualizações por pedido" }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "TikTok Curtidas",
+      "icon": "fas fa-heart",
+      "category": "tiktok",
+      "description": "Aumente o engajamento dos seus vídeos com curtidas reais e de alta qualidade.",
+      "variations": [
+        { "name": "Curtidas Brasileiras", "price": 2.24, "details": "Curtidas de perfis reais brasileiros | Entrega em 1-6h | Alta velocidade", "important": "Funciona apenas em vídeos públicos | Mínimo 100 curtidas por pedido" },
+        { "name": "Curtidas Brasileiras c/ Reposição (30 dias)", "price": 2.02, "details": "Curtidas de perfis reais brasileiros | Entrega em 1-6h | Reposição garantida por 30 dias", "important": "Funciona apenas em vídeos públicos | Mínimo 100 curtidas por pedido" },
+        { "name": "Curtidas Mundiais", "price": 1.46, "details": "Curtidas internacionais | Entrega super rápida (0-2h) | Alta velocidade", "important": "Melhor para contas internacionais" },
+        { "name": "Curtidas Mundiais c/ Reposição (30 dias)", "price": 1.00, "details": "Curtidas internacionais | Entrega rápida (1-4h) | Reposição garantida por 30 dias", "important": "Garantia mais longa do mercado | Perfis ativos de diversos países" }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "TikTok Comentários Personalizados",
+      "icon": "fas fa-comment-dots",
+      "category": "tiktok",
+      "description": "Aumente o engajamento dos seus vídeos com comentários personalizados de alta qualidade.",
+      "variations": [
+        { "name": "Comentários Personalizados Brasileiros", "price": 585.00, "details": "Comentários personalizados em português | Perfis brasileiros reais | Entrega em 24-48h", "important": "Fornecer texto base para os comentários | Mínimo 10 comentários por pedido" },
+        { "name": "Comentários Personalizados Mundiais", "price": 31.94, "details": "Comentários personalizados internacionais | Diversos países | Entrega em 24-72h", "important": "Fornecer texto em inglês/espanhol | Pode incluir perfis de qualquer país" }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "YouTube Inscritos",
+      "icon": "fab fa-youtube",
+      "category": "youtube",
+      "description": "Aumente sua base de inscritos no YouTube com perfis reais e engajados.",
+      "variations": [
+        { "name": "Inscritos Mundiais c/ Reposição (30 dias)", "price": 31.92, "details": "Inscritos internacionais | Perfis ativos de diversos países | Entrega rápida", "important": "Melhor para canais com conteúdo global" },
+        { "name": "Inscritos Brasileiros c/ Reposição (30 dias)", "price": 146.52, "details": "Inscritos brasileiros reais | Perfis engajados | Entrega gradual em até 72h", "important": "Funciona apenas com canais públicos" }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "YouTube Visualizações",
+      "icon": "fas fa-eye",
+      "category": "youtube",
+      "description": "Aumente as visualizações dos seus vídeos ou shorts no YouTube com engajamento real.",
+      "variations": [
+        { "name": "Visualizações em Vídeos c/ Reposição (30 dias)", "price": 19.42, "details": "Visualizações reais em vídeos | Entrega em 1-6h | Alta velocidade", "important": "Funciona apenas em vídeos públicos | Mínimo 100 visualizações por pedido" },
+        { "name": "Visualizações em Shorts c/ Reposição (365 dias)", "price": 15.54, "details": "Visualizações reais em shorts | Perfis ativos | Reposição garantida por 1 ano", "important": "Funciona apenas em shorts públicos | Mínimo 100 visualizações por pedido" }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "YouTube Likes",
+      "icon": "fas fa-thumbs-up",
+      "category": "youtube",
+      "description": "Aumente o engajamento dos seus vídeos ou shorts com curtidas reais.",
+      "variations": [
+        { "name": "Curtidas em Shorts", "price": 8.68, "details": "Curtidas em shorts | Perfis reais | Entrega rápida (0-2h)", "important": "Funciona apenas em shorts públicos | Mínimo 100 curtidas por pedido" },
+        { "name": "Curtidas em Vídeos c/ Reposição (30 dias)", "price": 8.98, "details": "Curtidas em vídeos | Perfis reais | Reposição garantida por 30 dias", "important": "Funciona apenas em vídeos públicos | Mínimo 100 curtidas por pedido" }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "YouTube Comentários Personalizados",
+      "icon": "fas fa-comment-dots",
+      "category": "youtube",
+      "description": "Aumente o engajamento dos seus vídeos com comentários personalizados de alta qualidade.",
+      "variations": [
+        { "name": "Comentários Personalizados Mundiais c/ Reposição (30 dias)", "price": 92.66, "details": "Comentários personalizados internacionais | Diversos países | Entrega em 24-72h", "important": "Fornecer texto em inglês/espanhol | Pode incluir perfis de qualquer país" },
+        { "name": "Comentários Personalizados Brasileiros c/ Reposição (365 dias)", "price": 2000.00, "details": "Comentários personalizados em português | Perfis brasileiros reais | Reposição por 1 ano", "important": "Fornecer texto base para os comentários | Mínimo 10 comentários por pedido" }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Facebook Seguidores e Curtidas (Página)",
+      "icon": "fab fa-facebook",
+      "category": "facebook",
+      "description": "Aumente seguidores e curtidas na sua página do Facebook com perfis reais.",
+      "variations": [
+        { "name": "Sem Reposição", "price": 19.94, "details": "Entrega rápida | Perfis reais | Aumento simultâneo de curtidas e seguidores", "important": "Funciona apenas em páginas públicas" },
+        { "name": "Com Reposição (30 dias)", "price": 19.70, "details": "Entrega gradual | Perfis reais | Reposição garantida por 30 dias", "important": "Repomos perdas naturais dentro do período" }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Facebook Seguidores e Curtidas (Perfil)",
+      "icon": "fab fa-facebook",
+      "category": "facebook",
+      "description": "Aumente seguidores e curtidas no seu perfil pessoal do Facebook com perfis reais.",
+      "variations": [
+        { "name": "Seguidores Brasileiros c/ Reposição (30 dias)", "price": 129.14, "details": "Perfis brasileiros reais | Entrega gradual | Aumenta curtidas e seguidores simultaneamente", "important": "Requer perfil público" },
+        { "name": "Seguidores Mundiais c/ Reposição (30 dias)", "price": 28.46, "details": "Perfis internacionais ativos | Entrega rápida | Aumenta curtidas e seguidores simultaneamente", "important": "Melhor para contas com conteúdo global" }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Facebook Comentários Personalizados",
+      "icon": "fas fa-comment-dots",
+      "category": "facebook",
+      "description": "Aumente o engajamento nos seus posts com comentários personalizados de alta qualidade.",
+      "variations": [
+        { "name": "Comentários Personalizados Brasileiros", "price": 6000.00, "details": "Comentários personalizados em português | Perfis brasileiros reais | Entrega em 24-72h", "important": "Fornecer texto base para os comentários | Mínimo 10 comentários por pedido" }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Facebook Compartilhamentos em Post",
+      "icon": "fas fa-share-alt",
+      "category": "facebook",
+      "description": "Aumente o alcance dos seus posts no Facebook com compartilhamentos reais.",
+      "variations": [
+        { "name": "Compartilhamentos Mundiais c/ Reposição (30 dias)", "price": 3.66, "details": "Compartilhamentos internacionais | Perfis ativos | Entrega em 1-6h", "important": "Funciona apenas em posts públicos | Mínimo 10 compartilhamentos por pedido" },
+        { "name": "Compartilhamentos Brasileiros", "price": 233.68, "details": "Compartilhamentos brasileiros reais | Entrega em 1-6h | Alta qualidade", "important": "Funciona apenas em posts públicos | Mínimo 10 compartilhamentos por pedido" }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Facebook Membros em Grupos",
+      "icon": "fas fa-users",
+      "category": "facebook",
+      "description": "Aumente o número de membros no seu grupo do Facebook com participantes reais.",
+      "variations": [
+        { "name": "Membros Brasileiros c/ Reposição (30 dias)", "price": 119.92, "details": "Membros brasileiros reais | Entrega gradual | Participação real em grupos", "important": "Grupo deve ser público ou com solicitação de entrada" },
+        { "name": "Membros Mundiais c/ Reposição (30 dias)", "price": 45.44, "details": "Membros internacionais | Entrega rápida | Diversos países", "important": "Grupo deve ser público ou com solicitação de entrada" }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Facebook Visualizações",
+      "icon": "fas fa-eye",
+      "category": "facebook",
+      "description": "Aumente as visualizações dos seus vídeos ou stories no Facebook com engajamento real.",
+      "variations": [
+        { "name": "Visualizações em Vídeo c/ Reposição (365 dias)", "price": 3.30, "details": "Visualizações reais em vídeos | Perfis ativos | Reposição por 1 ano", "important": "Funciona apenas em vídeos públicos | Mínimo 100 visualizações por pedido" },
+        { "name": "Visualizações em Stories", "price": 22.92, "details": "Visualizações reais em stories | Perfis brasileiros reais | Entrega rápida", "important": "Funciona apenas em stories públicos | Mínimo 100 visualizações por pedido" }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Twitter Seguidores",
+      "icon": "fab fa-twitter",
+      "category": "twitter",
+      "description": "Aumente seu número de seguidores no Twitter com perfis reais e ativos.",
+      "variations": [
+        { "name": "Seguidores Mundiais c/ Reposição (30 dias)", "price": 104.58, "details": "Perfis internacionais ativos | Entrega rápida 12-48h | Diversos países", "important": "Melhor para contas com conteúdo global (inglês/espanhol)" }
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Twitter Retweets",
+      "icon": "fas fa-retweet",
+      "category": "twitter",
+      "description": "Aumente o engajamento dos seus tweets com retweets reais e de alta qualidade.",
+      "variations": [
+        { "name": "Retweets Mundiais", "price": 9.24, "details": "Retweets internacionais | Perfis reais | Entrega em 1-6h", "important": "Funciona apenas em tweets públicos | Mínimo 100 retweets por pedido" }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Twitter Visualizações",
+      "icon": "fas fa-eye",
+      "category": "twitter",
+      "description": "Aumente as visualizações dos seus vídeos no Twitter com engajamento real.",
+      "variations": [
+        { "name": "Visualizações Mundiais", "price": 0.02, "details": "Visualizações internacionais | Entrega rápida (0-2h) | Alta velocidade", "important": "Funciona apenas em vídeos públicos | Mínimo 100 visualizações por pedido" }
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Twitter Comentários Personalizados",
+      "icon": "fas fa-comment-dots",
+      "category": "twitter",
+      "description": "Aumente o engajamento dos seus tweets com comentários personalizados de alta qualidade.",
+      "variations": [
+        { "name": "Comentários Personalizados Mundiais c/ Reposição (30 dias)", "price": 369.88, "details": "Comentários personalizados internacionais | Diversos países | Entrega em 24-72h", "important": "Fornecer texto em inglês/espanhol | Pode incluir perfis de qualquer país" }
+      ]
+    }
+  ]
+}

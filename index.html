@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Troço SMM - Serviços de Mídia Social</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #FF0000;
+      --secondary-color: #000000;
+      --dark-bg: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #ffffff;
+      --light-text: #f0f0f0;
+      --success-color: #25D366;
+      --danger-color: #ff4444;
+      --gray-color: #333333;
+      --light-gray: #555555;
+      --discount-color: #FF5722;
+      --category-color: #FF0000;
+      --telegram-color: #0088cc;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    body {
+      background-color: var(--dark-bg);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      padding-top: 80px;
+      padding-bottom: 100px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    /* Carrinho Flutuante */
+    .floating-cart {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      padding: 1rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--primary-color);
+    }
+    
+    .cart-summary {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .cart-toggle {
+      background: var(--primary-color);
+      color: var(--light-text);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .cart-count {
+      background: var(--secondary-color);
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+    
+    .cart-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 1rem;
+      background: var(--card-bg);
+      width: 350px;
+      max-height: 70vh;
+      overflow-y: auto;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      padding: 1rem;
+      display: none;
+    }
+    
+    .cart-dropdown.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .coupon-container {
+      margin: 1rem 0;
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .coupon-input {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 5px;
+      border: 1px solid var(--light-gray);
+      background: var(--dark-bg);
+      color: white;
+    }
+    
+    .apply-coupon {
+      background: var(--discount-color);
+      color: white;
+      border: none;
+      padding: 0 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    .discount-applied {
+      color: var(--discount-color);
+      font-weight: bold;
+      margin: 0.5rem 0;
+      display: none;
+    }
+    
+    .cart-total {
+      font-weight: bold;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--light-gray);
+    }
+    
+    .checkout-btn {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      font-size: 1rem;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    h1 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+    
+    h2 {
+      margin: 1.5rem 0 1rem;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+    
+    /* Categorias */
+    .category-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      scrollbar-width: none;
+    }
+    
+    .category-tabs::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .category-tab {
+      background: var(--gray-color);
+      padding: 0.7rem 1.2rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    
+    .category-tab:hover {
+      background: var(--light-gray);
+    }
+    
+    .category-tab.active {
+      background: var(--category-color);
+      color: white;
+      font-weight: bold;
+    }
+    
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .product-card {
+      background: var(--card-bg);
+      padding: 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-left: 4px solid var(--primary-color);
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .product-card i {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    .btn-primary {
+      background: var(--primary-color);
+      color: var(--light-text);
+    }
+    
+    .btn-primary:hover {
+      background: #cc0000;
+    }
+    
+    .btn-success {
+      background: var(--success-color);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background: #20b955;
+    }
+    
+    .btn-danger {
+      background: var(--danger-color);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #e63939;
+    }
+    
+    .back-link {
+      color: var(--primary-color);
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 1rem;
+      text-decoration: none;
+    }
+    
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    
+    .variation-btn {
+      display: inline-block;
+      background: var(--gray-color);
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    
+    .variation-btn:hover {
+      background: var(--light-gray);
+    }
+    
+    .variation-btn.active {
+      background: var(--primary-color);
+      color: var(--light-text);
+      font-weight: bold;
+    }
+    
+    .cart-item {
+      margin: 0.5rem 0;
+      padding: 0.8rem;
+      background: var(--dark-bg);
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .cart-item i {
+      cursor: pointer;
+      color: var(--danger-color);
+    }
+    
+    /* Botões flutuantes */
+    .floating-buttons-container {
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 999;
+    }
+    
+    .floating-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .floating-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+    
+    .floating-button .tooltip {
+      position: absolute;
+      right: 60px;
+      background: var(--card-bg);
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .floating-button:hover .tooltip {
+      opacity: 1;
+    }
+    
+    .whatsapp-btn {
+      background: var(--success-color);
+      color: white;
+    }
+    
+    .telegram-btn {
+      background: var(--telegram-color);
+      color: white;
+    }
+    
+    .group-btn {
+      background: var(--success-color);
+      color: white;
+    }
+    
+    .checkout-btn-float {
+      background: var(--primary-color);
+      color: var(--light-text);
+    }
+    
+    .empty-cart {
+      color: var(--light-gray);
+      font-style: italic;
+      padding: 1rem;
+      text-align: center;
+    }
+    
+    .product-detail {
+      background: var(--card-bg);
+      padding: 1.2rem;
+      border-radius: 10px;
+      margin: 1rem 0;
+    }
+    
+    .selected-variation {
+      padding: 0.8rem;
+      background: rgba(255, 0, 0, 0.1);
+      border-radius: 8px;
+      border-left: 3px solid var(--primary-color);
+      margin: 1rem 0;
+    }
+    
+    /* Controle de quantidade */
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    
+    .quantity-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--gray-color);
+      color: white;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    
+    .quantity-btn:hover {
+      background: var(--light-gray);
+    }
+    
+    .quantity-input {
+      width: 60px;
+      text-align: center;
+      background: var(--dark-bg);
+      color: white;
+      border: 1px solid var(--light-gray);
+      border-radius: 5px;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    
+    .important-note {
+      color: var(--danger-color);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      background: rgba(255, 87, 34, 0.1);
+      border-radius: 5px;
+    }
+    
+    .top-back-link {
+      display: block;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .top-back-link:hover {
+      text-decoration: underline;
+    }
+    
+    /* Estilo para o seletor de quantidade em milhares */
+    .quantity-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin: 1.5rem 0;
+    }
+    
+    .quantity-option {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: var(--gray-color);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+    
+    .quantity-option:hover {
+      background: var(--light-gray);
+    }
+    
+    .quantity-option.active {
+      background: var(--primary-color);
+      color: var(--light-text);
+      font-weight: bold;
+    }
+    
+    .custom-quantity {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    
+    .custom-quantity input {
+      flex: 1;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--light-gray);
+      background: var(--dark-bg);
+      color: white;
+      font-size: 1rem;
+    }
+    
+    .custom-quantity button {
+      padding: 1rem 1.5rem;
+    }
+    
+    .cart-quantity-input {
+      width: 80px;
+      text-align: center;
+      background: var(--dark-bg);
+      color: white;
+      border: 1px solid var(--light-gray);
+      border-radius: 5px;
+      padding: 0.3rem;
+      font-size: 0.9rem;
+      margin: 0 0.5rem;
+    }
+    
+    /* Alertas */
+    .alert {
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      padding: 1rem;
+      border-radius: 8px;
+      color: white;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .alert-success {
+      background: var(--success-color);
+    }
+    
+    .alert-danger {
+      background: var(--danger-color);
+    }
+    
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      body {
+        padding-top: 70px;
+        padding-bottom: 90px;
+      }
+      
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .cart-dropdown {
+        width: calc(100% - 2rem);
+        left: 1rem;
+        right: 1rem;
+        max-height: 60vh;
+      }
+      
+      h1 {
+        font-size: 1.6rem;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+      }
+      
+      .product-card {
+        padding: 1rem;
+      }
+      
+      .product-card i {
+        font-size: 1.6rem;
+      }
+      
+      .variation-btn {
+        padding: 0.7rem;
+      }
+      
+      .quantity-btn {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .quantity-input {
+        width: 50px;
+      }
+      
+      .floating-buttons-container {
+        bottom: 10px;
+        right: 10px;
+      }
+      
+      .floating-button {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+      }
+      
+      .floating-button .tooltip {
+        font-size: 0.8rem;
+        right: 50px;
+        padding: 0.4rem 0.8rem;
+      }
+      
+      .quantity-option {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+      }
+      
+      .custom-quantity input {
+        padding: 0.8rem;
+      }
+      
+      .alert {
+        bottom: 80px;
+        right: 15px;
+        font-size: 0.9rem;
+      }
+    }
+    
+    /* Small Mobile Styles */
+    @media (max-width: 480px) {
+      .floating-cart {
+        padding: 0.8rem;
+      }
+      
+      .cart-toggle {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+      }
+      
+      .cart-count {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+      }
+      
+      .product-detail {
+        padding: 0.8rem;
+      }
+      
+      .selected-variation {
+        padding: 0.7rem;
+      }
+      
+      .checkout-btn {
+        padding: 0.7rem;
+        font-size: 0.9rem;
+      }
+      
+      .floating-button {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+  </style>
+</head>
+<body>
+  <!-- Carrinho Flutuante -->
+  <div class="floating-cart">
+    <div class="cart-summary">
+      <i class="fas fa-shopping-cart"></i>
+      <span>Carrinho (<span id="cart-count">0</span>)</span>
+    </div>
+    <button class="cart-toggle" onclick="toggleCart()">
+      <span>Ver Carrinho</span>
+      <div class="cart-count" id="cart-badge">0</div>
+    </button>
+    
+    <div class="cart-dropdown" id="cartDropdown">
+      <h3><i class="fas fa-shopping-cart"></i> Seu Carrinho</h3>
+      <div id="cart-items"></div>
+      
+      <div class="coupon-container">
+        <input type="text" class="coupon-input" id="couponInput" placeholder="Código de desconto">
+        <button class="apply-coupon" onclick="applyCoupon()">Aplicar</button>
+      </div>
+      
+      <div class="discount-applied" id="discountApplied">
+        <i class="fas fa-tag"></i> Cupom aplicado: <span id="discountValue">10%</span> de desconto
+      </div>
+      
+      <div class="cart-total">
+        Total: <span id="cart-total">R$ 0,00</span>
+        <div id="cart-discount" style="color: var(--discount-color); display: none;">
+          Desconto: -<span id="discount-amount">R$ 0,00</span>
+        </div>
+        <div id="cart-final-total">
+          Total com desconto: <span id="final-total">R$ 0,00</span>
+        </div>
+      </div>
+      
+      <button class="btn btn-success checkout-btn" onclick="checkout()">
+        <i class="fab fa-whatsapp"></i> Finalizar Pedido
+      </button>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Home -->
+    <div id="homePage">
+      <header>
+        <h1><i class="fas fa-hashtag"></i> Troço SMM</h1>
+        <p>Serviços de mídia social com os melhores preços</p>
+      </header>
+      
+      <!-- Abas de Categorias -->
+      <div class="category-tabs" id="categoryTabs">
+        <!-- As categorias serão geradas dinamicamente pelo JavaScript -->
+      </div>
+      
+      <!-- Lista de Produtos por Categoria -->
+      <div id="productsByCategory">
+        <!-- Os produtos serão filtrados por categoria dinamicamente -->
+      </div>
+    </div>
+
+    <!-- Product Detail -->
+    <div id="productDetail" class="hidden">
+      <a class="top-back-link" onclick="goHome()">
+        <i class="fas fa-arrow-left"></i> Voltar para produtos
+      </a>
+      
+      <div class="product-detail fade-in">
+        <h2 id="productName"><i class="fas fa-info-circle"></i> Produto</h2>
+        <p id="productDescription">Descrição do produto.</p>
+        
+        <h3><i class="fas fa-options"></i> Opções Disponíveis</h3>
+        <div id="variationsContainer"></div>
+        
+        <div class="selected-variation">
+          <strong>Selecionado:</strong> <span id="selectedVariation">-</span>
+        </div>
+        
+        <h3><i class="fas fa-calculator"></i> Quantidade</h3>
+        <div class="quantity-selector" id="quantitySelector">
+          <!-- Opções de quantidade serão geradas dinamicamente -->
+        </div>
+        
+        <div class="custom-quantity" id="customQuantityContainer" style="display: none;">
+          <input type="number" id="customQuantityInput" min="100" step="100" placeholder="Quantidade personalizada">
+          <button class="btn btn-primary" onclick="applyCustomQuantity()">Aplicar</button>
+        </div>
+        
+        <div class="quantity-control">
+          <button class="quantity-btn" onclick="changeQuantity(-100)">-100</button>
+          <input type="number" class="quantity-input" id="productQuantity" value="1000" min="100" step="100">
+          <span style="margin: 0 0.5rem;">=</span>
+          <span id="totalPrice" style="font-weight: bold;">R$ 0,00</span>
+          <button class="quantity-btn" onclick="changeQuantity(100)">+100</button>
+        </div>
+        
+        <button class="btn btn-primary" onclick="addToCart()">
+          <i class="fas fa-cart-plus"></i> Adicionar ao Carrinho
+        </button>
+      </div>
+      
+      <a class="back-link" onclick="goHome()">
+        <i class="fas fa-arrow-left"></i> Voltar para produtos
+      </a>
+    </div>
+  </div>
+
+  <!-- Botões flutuantes -->
+  <div class="floating-buttons-container">
+    <div class="floating-button group-btn" onclick="openGroupWhatsApp()">
+      <i class="fab fa-whatsapp"></i>
+      <span class="tooltip">Grupo de Clientes</span>
+    </div>
+    <div class="floating-button telegram-btn" onclick="openTelegram()">
+      <i class="fab fa-telegram"></i>
+      <span class="tooltip">Suporte Telegram</span>
+    </div>
+    <div class="floating-button whatsapp-btn" onclick="openSupportWhatsApp()">
+      <i class="fab fa-whatsapp"></i>
+      <span class="tooltip">Suporte WhatsApp</span>
+    </div>
+    <div class="floating-button checkout-btn-float" onclick="checkout()">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="tooltip">Finalizar Pedido</span>
+    </div>
+  </div>
+
+  <script>
+    let cart = [];
+    let selectedProductId = null;
+    let selectedVariationText = "";
+    let selectedVariationPrice = 0;
+    let discountApplied = false;
+    const DISCOUNT_CODE = "DESC10";
+    const DISCOUNT_PERCENTAGE = 0.1; // 10%
+    let currentCategory = 'todos';
+    let currentQuantity = 1000; // Quantidade padrão em unidades
+
+    const products = [
+      {
+  id: 1,
+  name: "Instagram Seguidores",
+  icon: "fab fa-instagram",
+  category: "instagram",
+  description: "Aumente seu número de seguidores no Instagram com perfis reais e ativos.",
+  variations: [
+    { 
+      name: "Seguidores Brasileiros Sem Reposição", 
+      price: 25.82,
+      details: "Entrega gradual 24-72h | Perfis brasileiros reais | Alta qualidade",
+      important: "Não inclui reposição de perdas naturais após 30 dias"
+    },
+    { 
+      name: "Seguidores Brasileiros Com Reposição (30 dias)", 
+      price: 25.08,
+      details: "Entrega gradual 24-72h | Perfis brasileiros reais | Reposição garantida por 30 dias",
+      important: "Repomos perdas naturais dentro do período de 30 dias"
+    },
+    { 
+      name: "Seguidores Mundiais Sem Reposição", 
+      price: 13.96,
+      details: "Entrega rápida 12-48h | Perfis internacionais ativos | Diversos países",
+      important: "Melhor para contas com conteúdo global (inglês/espanhol)"
+    },
+    { 
+      name: "Seguidores Mundiais Com Reposição (30 dias)", 
+      price: 16.70,
+      details: "Entrega rápida 12-48h | Perfis internacionais | Reposição garantida por 30 dias",
+      important: "Garantia de reposição para perdas dentro de 30 dias"
+    }
+  ]
+},
+{
+  id: 2,
+  name: "Instagram Curtidas",
+  icon: "fas fa-heart",
+  category: "instagram",
+  description: "Aumente o engajamento dos seus posts com curtidas reais e de alta qualidade.",
+  variations: [
+    { 
+      name: "Curtidas Brasileiras c/ Reposição (30 dias)", 
+      price: 2.45,
+      details: "Curtidas de perfis reais brasileiros | Entrega em 1-6h | Reposição garantida por 30 dias",
+      important: "Funciona apenas em posts públicos | Mínimo 100 curtidas por pedido"
+    },
+    { 
+      name: "Curtidas Mundiais s/ Reposição", 
+      price: 0.11,
+      details: "Curtidas internacionais | Entrega super rápida (0-2h) | Alta velocidade",
+      important: "Melhor para contas internacionais | Não inclui reposição após queda"
+    },
+    { 
+      name: "Curtidas Mundiais c/ Reposição (365 dias)", 
+      price: 0.17,
+      details: "Curtidas globais | Entrega rápida (1-4h) | Reposição por 1 ano completo",
+      important: "Garantia mais longa do mercado | Perfis ativos de diversos países"
+    }
+  ]
+},
+{
+  id: 3,
+  name: "Instagram Comentários",
+  icon: "fas fa-comment",
+  category: "instagram",
+  description: "Aumente o engajamento dos seus posts com comentários personalizados ou prontos.",
+  variations: [
+    { 
+      name: "Comentários Personalizados Brasileiros (Masculino)", 
+      price: 368.30,
+      details: "Comentários masculinos personalizados | Perfis brasileiros reais | Entrega em 24-48h",
+      important: "Fornecer texto base para os comentários | Mínimo 10 comentários por pedido"
+    },
+    { 
+      name: "Comentários Personalizados Brasileiros (Feminino)", 
+      price: 368.30,
+      details: "Comentários femininos personalizados | Perfis brasileiros reais | Entrega em 24-48h",
+      important: "Fornecer texto base para os comentários | Mínimo 10 comentários por pedido"
+    },
+    { 
+      name: "Comentários Personalizados Brasileiros (Misturado)", 
+      price: 348.00,
+      details: "Comentários mistos personalizados | Perfis brasileiros reais | Entrega em 24-48h",
+      important: "Fornecer texto base para os comentários | Mínimo 10 comentários por pedido"
+    },
+    { 
+      name: "Comentários Personalizados Mundiais", 
+      price: 52.74,
+      details: "Comentários personalizados internacionais | Diversos países | Entrega em 24-72h",
+      important: "Fornecer texto em inglês/espanhol | Pode incluir perfis de qualquer país"
+    },
+    { 
+      name: "Comentários Prontos Mundiais", 
+      price: 163.54,
+      details: "Comentários genéricos internacionais | Entrega rápida 12-24h | Diversos países",
+      important: "Comentários em inglês padrão | Não personalizáveis"
+    },
+    { 
+      name: "Comentários Prontos Brasileiros", 
+      price: 345.00,
+      details: "Comentários genéricos em português | Perfis brasileiros | Entrega em 24-48h",
+      important: "Comentários padrão em português | Não personalizáveis"
+    }
+  ]
+},
+{
+  id: 4,
+  name: "Instagram Visualizações",
+  icon: "fas fa-eye",
+  category: "instagram",
+  subcategory: "visualizacoes", // Subcategoria lógica
+  description: "Aumente as visualizações dos seus vídeos ou stories no Instagram com engajamento real.",
+  variations: [
+    {
+      name: "Visualizações em Vídeos",
+      price: 0.06,
+      details: "Visualizações em vídeos | Entrega em 1-6h",
+      important: "Funciona apenas em vídeos públicos | Mínimo 100 visualizações por pedido"
+    },
+    {
+      name: "Visualizações em Stories",
+      price: 1.72,
+      details: "Visualizações em stories | Entrega em 1-6h",
+      important: "Funciona apenas em stories públicos | Mínimo 100 visualizações por pedido"
+    }
+  ]
+},
+{
+  id: 5,
+  name: "TikTok Seguidores",
+  icon: "fab fa-tiktok",
+  category: "tiktok",
+  description: "Aumente seu número de seguidores no TikTok com perfis reais e ativos.",
+  variations: [
+    { 
+      name: "Seguidores Brasileiros", 
+      price: 18.16,
+      details: "Entrega rápida 24-72h | Perfis brasileiros reais | Alta qualidade",
+      important: "Sem reposição automática"
+    },
+    { 
+      name: "Seguidores Brasileiros c/ Reposição (30 dias)", 
+      price: 18.10,
+      details: "Entrega gradual 24-72h | Perfis brasileiros reais | Reposição garantida por 30 dias",
+      important: "Repomos perdas naturais dentro do período de 30 dias"
+    },
+    { 
+      name: "Seguidores Mundiais", 
+      price: 17.74,
+      details: "Entrega rápida 12-48h | Perfis internacionais ativos | Diversos países",
+      important: "Melhor para contas com conteúdo global (inglês/espanhol)"
+    },
+    { 
+      name: "Seguidores Mundiais c/ Reposição (30 dias)", 
+      price: 28.24,
+      details: "Entrega rápida 12-48h | Perfis internacionais | Reposição garantida por 30 dias",
+      important: "Garantia de reposição para perdas dentro de 30 dias"
+    }
+  ]
+},
+{
+  id: 6,
+  name: "TikTok Visualizações",
+  icon: "fas fa-eye",
+  category: "tiktok",
+  description: "Aumente as visualizações dos seus vídeos no TikTok com engajamento real.",
+  variations: [
+    { 
+      name: "Visualizações Mundiais", 
+      price: 0.04,
+      details: "Visualizações internacionais | Entrega em 1-6h | Alta velocidade",
+      important: "Funciona apenas em vídeos públicos | Mínimo 100 visualizações por pedido"
+    },
+    { 
+      name: "Visualizações Brasileiras", 
+      price: 0.04,
+      details: "Visualizações de perfis reais brasileiros | Entrega em 1-6h | Alta velocidade",
+      important: "Funciona apenas em vídeos públicos | Mínimo 100 visualizações por pedido"
+    }
+  ]
+},
+{
+  id: 7,
+  name: "TikTok Curtidas",
+  icon: "fas fa-heart",
+  category: "tiktok",
+  description: "Aumente o engajamento dos seus vídeos com curtidas reais e de alta qualidade.",
+  variations: [
+    { 
+      name: "Curtidas Brasileiras", 
+      price: 2.24,
+      details: "Curtidas de perfis reais brasileiros | Entrega em 1-6h | Alta velocidade",
+      important: "Funciona apenas em vídeos públicos | Mínimo 100 curtidas por pedido"
+    },
+    { 
+      name: "Curtidas Brasileiras c/ Reposição (30 dias)", 
+      price: 2.02,
+      details: "Curtidas de perfis reais brasileiros | Entrega em 1-6h | Reposição garantida por 30 dias",
+      important: "Funciona apenas em vídeos públicos | Mínimo 100 curtidas por pedido"
+    },
+    { 
+      name: "Curtidas Mundiais", 
+      price: 1.46,
+      details: "Curtidas internacionais | Entrega super rápida (0-2h) | Alta velocidade",
+      important: "Melhor para contas internacionais"
+    },
+    { 
+      name: "Curtidas Mundiais c/ Reposição (30 dias)", 
+      price: 1.00,
+      details: "Curtidas internacionais | Entrega rápida (1-4h) | Reposição garantida por 30 dias",
+      important: "Garantia mais longa do mercado | Perfis ativos de diversos países"
+    }
+  ]
+},
+{
+  id: 8,
+  name: "TikTok Comentários Personalizados",
+  icon: "fas fa-comment-dots",
+  category: "tiktok",
+  description: "Aumente o engajamento dos seus vídeos com comentários personalizados de alta qualidade.",
+  variations: [
+    { 
+      name: "Comentários Personalizados Brasileiros", 
+      price: 585.00,
+      details: "Comentários personalizados em português | Perfis brasileiros reais | Entrega em 24-48h",
+      important: "Fornecer texto base para os comentários | Mínimo 10 comentários por pedido"
+    },
+    { 
+      name: "Comentários Personalizados Mundiais", 
+      price: 31.94,
+      details: "Comentários personalizados internacionais | Diversos países | Entrega em 24-72h",
+      important: "Fornecer texto em inglês/espanhol | Pode incluir perfis de qualquer país"
+    }
+  ]
+},
+{
+  id: 9,
+  name: "YouTube Inscritos",
+  icon: "fab fa-youtube",
+  category: "youtube",
+  description: "Aumente sua base de inscritos no YouTube com perfis reais e engajados.",
+  variations: [
+    {
+      name: "Inscritos Mundiais c/ Reposição (30 dias)",
+      price: 31.92,
+      details: "Inscritos internacionais | Perfis ativos de diversos países | Entrega rápida",
+      important: "Melhor para canais com conteúdo global"
+    },
+    {
+      name: "Inscritos Brasileiros c/ Reposição (30 dias)",
+      price: 146.52,
+      details: "Inscritos brasileiros reais | Perfis engajados | Entrega gradual em até 72h",
+      important: "Funciona apenas com canais públicos"
+    }
+  ]
+},
+{
+  id: 10,
+  name: "YouTube Visualizações",
+  icon: "fas fa-eye",
+  category: "youtube",
+  description: "Aumente as visualizações dos seus vídeos ou shorts no YouTube com engajamento real.",
+  variations: [
+    {
+      name: "Visualizações em Vídeos c/ Reposição (30 dias)",
+      price: 19.42,
+      details: "Visualizações reais em vídeos | Entrega em 1-6h | Alta velocidade",
+      important: "Funciona apenas em vídeos públicos | Mínimo 100 visualizações por pedido"
+    },
+    {
+      name: "Visualizações em Shorts c/ Reposição (365 dias)",
+      price: 15.54,
+      details: "Visualizações reais em shorts | Perfis ativos | Reposição garantida por 1 ano",
+      important: "Funciona apenas em shorts públicos | Mínimo 100 visualizações por pedido"
+    }
+  ]
+},
+{
+  id: 11,
+  name: "YouTube Likes",
+  icon: "fas fa-thumbs-up",
+  category: "youtube",
+  description: "Aumente o engajamento dos seus vídeos ou shorts com curtidas reais.",
+  variations: [
+    {
+      name: "Curtidas em Shorts",
+      price: 8.68,
+      details: "Curtidas em shorts | Perfis reais | Entrega rápida (0-2h)",
+      important: "Funciona apenas em shorts públicos | Mínimo 100 curtidas por pedido"
+    },
+    {
+      name: "Curtidas em Vídeos c/ Reposição (30 dias)",
+      price: 8.98,
+      details: "Curtidas em vídeos | Perfis reais | Reposição garantida por 30 dias",
+      important: "Funciona apenas em vídeos públicos | Mínimo 100 curtidas por pedido"
+    }
+  ]
+},
+{
+  id: 12,
+  name: "YouTube Comentários Personalizados",
+  icon: "fas fa-comment-dots",
+  category: "youtube",
+  description: "Aumente o engajamento dos seus vídeos com comentários personalizados de alta qualidade.",
+  variations: [
+    {
+      name: "Comentários Personalizados Mundiais c/ Reposição (30 dias)",
+      price: 92.66,
+      details: "Comentários personalizados internacionais | Diversos países | Entrega em 24-72h",
+      important: "Fornecer texto em inglês/espanhol | Pode incluir perfis de qualquer país"
+    },
+    {
+      name: "Comentários Personalizados Brasileiros c/ Reposição (365 dias)",
+      price: 2000.00,
+      details: "Comentários personalizados em português | Perfis brasileiros reais | Reposição por 1 ano",
+      important: "Fornecer texto base para os comentários | Mínimo 10 comentários por pedido"
+    }
+  ]
+},
+{
+  id: 13,
+  name: "Facebook Seguidores e Curtidas (Página)",
+  icon: "fab fa-facebook",
+  category: "facebook",
+  description: "Aumente seguidores e curtidas na sua página do Facebook com perfis reais.",
+  variations: [
+    {
+      name: "Sem Reposição",
+      price: 19.94,
+      details: "Entrega rápida | Perfis reais | Aumento simultâneo de curtidas e seguidores",
+      important: "Funciona apenas em páginas públicas"
+    },
+    {
+      name: "Com Reposição (30 dias)",
+      price: 19.70,
+      details: "Entrega gradual | Perfis reais | Reposição garantida por 30 dias",
+      important: "Repomos perdas naturais dentro do período"
+    }
+  ]
+},
+{
+  id: 14,
+  name: "Facebook Seguidores e Curtidas (Perfil)",
+  icon: "fab fa-facebook",
+  category: "facebook",
+  description: "Aumente seguidores e curtidas no seu perfil pessoal do Facebook com perfis reais.",
+  variations: [
+    {
+      name: "Seguidores Brasileiros c/ Reposição (30 dias)",
+      price: 129.14,
+      details: "Perfis brasileiros reais | Entrega gradual | Aumenta curtidas e seguidores simultaneamente",
+      important: "Requer perfil público"
+    },
+    {
+      name: "Seguidores Mundiais c/ Reposição (30 dias)",
+      price: 28.46,
+      details: "Perfis internacionais ativos | Entrega rápida | Aumenta curtidas e seguidores simultaneamente",
+      important: "Melhor para contas com conteúdo global"
+    }
+  ]
+},
+{
+  id: 15,
+  name: "Facebook Comentários Personalizados",
+  icon: "fas fa-comment-dots",
+  category: "facebook",
+  description: "Aumente o engajamento nos seus posts com comentários personalizados de alta qualidade.",
+  variations: [
+    {
+      name: "Comentários Personalizados Brasileiros",
+      price: 6000.00,
+      details: "Comentários personalizados em português | Perfis brasileiros reais | Entrega em 24-72h",
+      important: "Fornecer texto base para os comentários | Mínimo 10 comentários por pedido"
+    }
+  ]
+},
+{
+  id: 16,
+  name: "Facebook Compartilhamentos em Post",
+  icon: "fas fa-share-alt",
+  category: "facebook",
+  description: "Aumente o alcance dos seus posts no Facebook com compartilhamentos reais.",
+  variations: [
+    {
+      name: "Compartilhamentos Mundiais c/ Reposição (30 dias)",
+      price: 3.66,
+      details: "Compartilhamentos internacionais | Perfis ativos | Entrega em 1-6h",
+      important: "Funciona apenas em posts públicos | Mínimo 10 compartilhamentos por pedido"
+    },
+    {
+      name: "Compartilhamentos Brasileiros",
+      price: 233.68,
+      details: "Compartilhamentos brasileiros reais | Entrega em 1-6h | Alta qualidade",
+      important: "Funciona apenas em posts públicos | Mínimo 10 compartilhamentos por pedido"
+    }
+  ]
+},
+{
+  id: 17,
+  name: "Facebook Membros em Grupos",
+  icon: "fas fa-users",
+  category: "facebook",
+  description: "Aumente o número de membros no seu grupo do Facebook com participantes reais.",
+  variations: [
+    {
+      name: "Membros Brasileiros c/ Reposição (30 dias)",
+      price: 119.92,
+      details: "Membros brasileiros reais | Entrega gradual | Participação real em grupos",
+      important: "Grupo deve ser público ou com solicitação de entrada"
+    },
+    {
+      name: "Membros Mundiais c/ Reposição (30 dias)",
+      price: 45.44,
+      details: "Membros internacionais | Entrega rápida | Diversos países",
+      important: "Grupo deve ser público ou com solicitação de entrada"
+    }
+  ]
+},
+{
+  id: 18,
+  name: "Facebook Visualizações",
+  icon: "fas fa-eye",
+  category: "facebook",
+  description: "Aumente as visualizações dos seus vídeos ou stories no Facebook com engajamento real.",
+  variations: [
+    {
+      name: "Visualizações em Vídeo c/ Reposição (365 dias)",
+      price: 3.30,
+      details: "Visualizações reais em vídeos | Perfis ativos | Reposição por 1 ano",
+      important: "Funciona apenas em vídeos públicos | Mínimo 100 visualizações por pedido"
+    },
+    {
+      name: "Visualizações em Stories",
+      price: 22.92,
+      details: "Visualizações reais em stories | Perfis brasileiros reais | Entrega rápida",
+      important: "Funciona apenas em stories públicos | Mínimo 100 visualizações por pedido"
+    }
+  ]
+},
+{
+  id: 19,
+  name: "Twitter Seguidores",
+  icon: "fab fa-twitter",
+  category: "twitter",
+  description: "Aumente seu número de seguidores no Twitter com perfis reais e ativos.",
+  variations: [
+    {
+      name: "Seguidores Mundiais c/ Reposição (30 dias)",
+      price: 104.58,
+      details: "Perfis internacionais ativos | Entrega rápida 12-48h | Diversos países",
+      important: "Melhor para contas com conteúdo global (inglês/espanhol)"
+    }
+  ]
+},
+{
+  id: 20,
+  name: "Twitter Retweets",
+  icon: "fas fa-retweet",
+  category: "twitter",
+  description: "Aumente o engajamento dos seus tweets com retweets reais e de alta qualidade.",
+  variations: [
+    {
+      name: "Retweets Mundiais",
+      price: 9.24,
+      details: "Retweets internacionais | Perfis reais | Entrega em 1-6h",
+      important: "Funciona apenas em tweets públicos | Mínimo 100 retweets por pedido"
+    }
+  ]
+},
+{
+  id: 21,
+  name: "Twitter Visualizações",
+  icon: "fas fa-eye",
+  category: "twitter",
+  description: "Aumente as visualizações dos seus vídeos no Twitter com engajamento real.",
+  variations: [
+    {
+      name: "Visualizações Mundiais",
+      price: 0.02,
+      details: "Visualizações internacionais | Entrega rápida (0-2h) | Alta velocidade",
+      important: "Funciona apenas em vídeos públicos | Mínimo 100 visualizações por pedido"
+    }
+  ]
+},
+{
+  id: 22,
+  name: "Twitter Comentários Personalizados",
+  icon: "fas fa-comment-dots",
+  category: "twitter",
+  description: "Aumente o engajamento dos seus tweets com comentários personalizados de alta qualidade.",
+  variations: [
+    {
+      name: "Comentários Personalizados Mundiais c/ Reposição (30 dias)",
+      price: 369.88,
+      details: "Comentários personalizados internacionais | Diversos países | Entrega em 24-72h",
+      important: "Fornecer texto em inglês/espanhol | Pode incluir perfis de qualquer país"
+    }
+  ]
+}
+];
+
+    // Categorias disponíveis
+    const categories = [
+      { id: 'todos', name: 'Todos os Serviços' },
+      { id: 'instagram', name: 'Instagram' },
+      { id: 'youtube', name: 'YouTube' },
+      { id: 'twitter', name: 'Twitter' },
+      { id: 'facebook', name: 'Facebook' },
+      { id: 'tiktok', name: 'TikTok' }
+    ];
+
+    // Quantidades pré-definidas
+    const quantityOptions = [
+      { value: 1000, label: "1.000" },
+      { value: 3000, label: "3.000" },
+      { value: 10000, label: "10.000" },
+      { value: 25000, label: "25.000" },
+      { value: 50000, label: "50.000" },
+      { value: 100000, label: "100.000" },
+      { value: 0, label: "Personalizado" }
+    ];
+
+    // Função para carregar o carrinho do localStorage
+    function loadCart() {
+      const savedCart = localStorage.getItem('trocoSMMCart');
+      if (savedCart) {
+        cart = JSON.parse(savedCart);
+        updateCart();
+      }
+    }
+
+    // Função para salvar o carrinho no localStorage
+    function saveCart() {
+      localStorage.setItem('trocoSMMCart', JSON.stringify(cart));
+    }
+
+    // Função para alterar a quantidade
+    function changeQuantity(change) {
+      const input = document.getElementById('productQuantity');
+      let newValue = parseInt(input.value) + change;
+      if (newValue < 100) newValue = 100;
+      input.value = newValue;
+      currentQuantity = newValue;
+      updateTotalPrice();
+    }
+
+    // Atualiza o preço total baseado na quantidade
+    function updateTotalPrice() {
+      const quantity = parseInt(document.getElementById('productQuantity').value) || 1000;
+      const totalElement = document.getElementById('totalPrice');
+      const total = (selectedVariationPrice * quantity / 1000).toFixed(2);
+      totalElement.textContent = `R$ ${total.replace('.', ',')}`;
+    }
+
+    // Aplica quantidade personalizada
+    function applyCustomQuantity() {
+      const customInput = document.getElementById('customQuantityInput');
+      const quantity = parseInt(customInput.value) || 1000;
+      
+      if (quantity < 100) {
+        showAlert("Quantidade mínima é 100", "danger");
+        return;
+      }
+      
+      document.getElementById('productQuantity').value = quantity;
+      currentQuantity = quantity;
+      updateTotalPrice();
+    }
+
+    // Inicializa a página
+    function initPage() {
+      loadCart();
+      renderCategories();
+      renderProducts('todos');
+    }
+
+    // Renderiza as categorias
+    function renderCategories() {
+      const container = document.getElementById('categoryTabs');
+      container.innerHTML = '';
+      
+      categories.forEach(category => {
+        const tab = document.createElement('div');
+        tab.className = `category-tab ${category.id === 'todos' ? 'active' : ''}`;
+        tab.textContent = category.name;
+        tab.onclick = () => {
+          document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentCategory = category.id;
+          renderProducts(category.id);
+        };
+        container.appendChild(tab);
+      });
+    }
+
+    // Renderiza os produtos por categoria
+    function renderProducts(categoryId) {
+      const container = document.getElementById('productsByCategory');
+      container.innerHTML = '';
+      
+      // Filtra produtos por categoria
+      const filteredProducts = categoryId === 'todos' 
+        ? products 
+        : products.filter(p => p.category === categoryId);
+      
+      if (filteredProducts.length === 0) {
+        container.innerHTML = '<p class="empty-cart">Nenhum serviço encontrado nesta categoria.</p>';
+        return;
+      }
+      
+      const grid = document.createElement('div');
+      grid.className = 'product-grid';
+      
+      filteredProducts.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card fade-in';
+        card.onclick = () => showProduct(product.id);
+        
+        // Mostra o menor preço disponível por 1000 unidades
+        const minPrice = Math.min(...product.variations.map(v => v.price));
+        
+        card.innerHTML = `
+          <i class="${product.icon}"></i>
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <div style="margin-top: 0.5rem;">
+            <span style="font-weight: bold;">A partir de ${formatPrice(minPrice)} por mil</span>
+          </div>
+          <small>${product.variations.length} opção${product.variations.length !== 1 ? 'es' : ''} disponível${product.variations.length !== 1 ? 's' : ''}</small>
+        `;
+        grid.appendChild(card);
+      });
+      
+      container.appendChild(grid);
+    }
+
+    function goHome() {
+      document.getElementById("homePage").classList.remove("hidden");
+      document.getElementById("productDetail").classList.add("hidden");
+    }
+
+    function showProduct(id) {
+      const product = products.find(p => p.id === id);
+      if (!product) return;
+      
+      selectedProductId = id;
+
+      // Atualiza informações do produto
+      document.getElementById("productName").innerHTML = `<i class="${product.icon}"></i> ${product.name}`;
+      document.getElementById("productDescription").textContent = product.description;
+      document.getElementById("productQuantity").value = 1000;
+      currentQuantity = 1000;
+
+      // Renderiza variações
+      const variationsContainer = document.getElementById("variationsContainer");
+      variationsContainer.innerHTML = "";
+      
+      product.variations.forEach((variation, index) => {
+        const btn = document.createElement("div");
+        btn.className = "variation-btn";
+        btn.innerHTML = `
+          <strong>${variation.name}</strong><br>
+          <small>${formatPrice(variation.price)} por mil</small>
+          <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--light-gray);">
+            ${variation.details}
+          </div>
+        `;
+        btn.setAttribute("data-value", variation.name);
+        
+        if (index === 0) {
+          btn.classList.add("active");
+          selectedVariationText = variation.name;
+          selectedVariationPrice = variation.price;
+          // Mostra os detalhes completos na seleção
+          document.getElementById("selectedVariation").innerHTML = `
+            <div><strong>${variation.name} - ${formatPrice(variation.price)} por mil</strong></div>
+            <div style="margin-top: 0.5rem;">${variation.details}</div>
+            <div class="important-note">
+              <strong>Importante:</strong> ${variation.important}
+            </div>
+          `;
+          // Atualiza o preço total
+          updateTotalPrice();
+        }
+        
+        btn.onclick = () => {
+          document.querySelectorAll(".variation-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          selectedVariationText = variation.name;
+          selectedVariationPrice = variation.price;
+          // Atualiza os detalhes quando seleciona outra variação
+          document.getElementById("selectedVariation").innerHTML = `
+            <div><strong>${variation.name} - ${formatPrice(variation.price)} por mil</strong></div>
+            <div style="margin-top: 0.5rem;">${variation.details}</div>
+            <div class="important-note">
+              <strong>Importante:</strong> ${variation.important}
+            </div>
+          `;
+          // Atualiza o preço total
+          updateTotalPrice();
+          // Atualiza os preços nas opções de quantidade
+          renderQuantityOptions(variation.price);
+        };
+        
+        variationsContainer.appendChild(btn);
+      });
+
+      // Renderiza opções de quantidade com o preço da primeira variação
+      renderQuantityOptions(product.variations[0].price);
+      
+      // Navegação
+      document.getElementById("homePage").classList.add("hidden");
+      document.getElementById("productDetail").classList.remove("hidden");
+    }
+
+    // Função para renderizar as opções de quantidade com o preço atual
+    function renderQuantityOptions(pricePer1000) {
+      const quantityContainer = document.getElementById("quantitySelector");
+      quantityContainer.innerHTML = "";
+      
+      quantityOptions.forEach(option => {
+        const div = document.createElement("div");
+        div.className = "quantity-option";
+        if (option.value === 1000) div.classList.add("active");
+        div.innerHTML = `
+          <span>${option.label}</span>
+          <span>${option.value > 0 ? formatPrice(pricePer1000 * option.value / 1000) : ''}</span>
+        `;
+        
+        div.onclick = () => {
+          document.querySelectorAll(".quantity-option").forEach(o => o.classList.remove("active"));
+          div.classList.add("active");
+          
+          if (option.value > 0) {
+            document.getElementById("productQuantity").value = option.value;
+            currentQuantity = option.value;
+            document.getElementById("customQuantityContainer").style.display = "none";
+          } else {
+            document.getElementById("customQuantityContainer").style.display = "flex";
+          }
+          
+          updateTotalPrice();
+        };
+        
+        quantityContainer.appendChild(div);
+      });
+    }
+
+    function addToCart() {
+      if (!selectedProductId || !selectedVariationText) {
+        showAlert("Por favor, selecione uma opção antes de adicionar ao carrinho", "danger");
+        return;
+      }
+
+      const quantity = parseInt(document.getElementById('productQuantity').value) || 1000;
+      const product = products.find(p => p.id === selectedProductId);
+      const variation = product.variations.find(v => v.name === selectedVariationText);
+      const totalPrice = (variation.price * quantity / 1000);
+      
+      // Verifica se o item já está no carrinho
+      const existingItemIndex = cart.findIndex(
+        item => item.productId === product.id && item.variation === selectedVariationText
+      );
+      
+      if (existingItemIndex !== -1) {
+        // Atualiza a quantidade se o item já existir
+        cart[existingItemIndex].quantity += quantity;
+        cart[existingItemIndex].totalPrice += totalPrice;
+      } else {
+        // Adiciona novo item ao carrinho
+        const item = {
+          id: Date.now(),
+          productId: product.id,
+          name: product.name,
+          variation: selectedVariationText,
+          pricePer1000: variation.price,
+          quantity: quantity,
+          totalPrice: totalPrice,
+          icon: product.icon
+        };
+        
+        cart.push(item);
+      }
+      
+      saveCart();
+      updateCart();
+      showAlert("Serviço adicionado ao carrinho com sucesso!", "success");
+    }
+
+    function removeFromCart(itemId) {
+      const index = cart.findIndex(item => item.id === itemId);
+      if (index !== -1) {
+        cart.splice(index, 1);
+        saveCart();
+        updateCart();
+        showAlert("Serviço removido do carrinho", "danger");
+      }
+    }
+
+    function updateItemQuantity(itemId, change) {
+      const index = cart.findIndex(item => item.id === itemId);
+      if (index !== -1) {
+        const newQuantity = cart[index].quantity + change;
+        
+        // Remove o item se a quantidade for menor que 100
+        if (newQuantity < 100) {
+          cart.splice(index, 1);
+          showAlert("Serviço removido do carrinho", "danger");
+        } else {
+          cart[index].quantity = newQuantity;
+          cart[index].totalPrice = (cart[index].pricePer1000 * newQuantity / 1000);
+        }
+        
+        saveCart();
+        updateCart();
+      }
+    }
+
+    // Atualiza a quantidade diretamente no input do carrinho
+    function updateCartItemQuantity(itemId, newQuantity) {
+      const index = cart.findIndex(item => item.id === itemId);
+      if (index !== -1) {
+        newQuantity = parseInt(newQuantity) || 100;
+        
+        if (newQuantity < 100) {
+          cart.splice(index, 1);
+          showAlert("Serviço removido do carrinho", "danger");
+        } else {
+          cart[index].quantity = newQuantity;
+          cart[index].totalPrice = (cart[index].pricePer1000 * newQuantity / 1000);
+        }
+        
+        saveCart();
+        updateCart();
+      }
+    }
+
+    function toggleCart() {
+      document.getElementById("cartDropdown").classList.toggle("show");
+    }
+
+    function closeCart() {
+      document.getElementById("cartDropdown").classList.remove("show");
+    }
+
+    function applyCoupon() {
+      const couponCode = document.getElementById("couponInput").value.trim();
+      const discountAppliedElement = document.getElementById("discountApplied");
+      
+      if (couponCode.toUpperCase() === DISCOUNT_CODE) {
+        discountApplied = true;
+        discountAppliedElement.style.display = "block";
+        updateCart();
+        showAlert("Cupom aplicado com sucesso! 10% de desconto.", "success");
+      } else {
+        discountApplied = false;
+        discountAppliedElement.style.display = "none";
+        showAlert("Código de cupom inválido", "danger");
+      }
+      updateCart();
+    }
+
+    function formatPrice(price) {
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price);
+    }
+
+    function calculateCartTotal() {
+      let subtotal = cart.reduce((sum, item) => sum + item.totalPrice, 0);
+      let discount = 0;
+      
+      if (discountApplied) {
+        discount = subtotal * DISCOUNT_PERCENTAGE;
+      }
+      
+      return {
+        subtotal: subtotal,
+        discount: discount,
+        total: subtotal - discount
+      };
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById("cart-items");
+      const cartCount = document.getElementById("cart-count");
+      const cartBadge = document.getElementById("cart-badge");
+      const cartTotalElement = document.getElementById("cart-total");
+      const discountAmountElement = document.getElementById("discount-amount");
+      const finalTotalElement = document.getElementById("final-total");
+      const cartDiscountElement = document.getElementById("cart-discount");
+      
+      // Mantém o carrinho aberto durante a atualização
+      const wasCartOpen = document.getElementById("cartDropdown").classList.contains("show");
+      
+      // Atualiza contador (soma as quantidades em milhares)
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCount.textContent = cart.length;
+      cartBadge.textContent = cart.length;
+      
+      // Atualiza lista de itens
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<div class="empty-cart">Seu carrinho está vazio</div>';
+        cartTotalElement.textContent = formatPrice(0);
+        finalTotalElement.textContent = formatPrice(0);
+        cartDiscountElement.style.display = "none";
+        
+        // Se o carrinho estava aberto, mantém aberto mesmo vazio
+        if (wasCartOpen) {
+          document.getElementById("cartDropdown").classList.add("show");
+        }
+        return;
+      }
+      
+      cartItems.innerHTML = "";
+      
+      cart.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "cart-item fade-in";
+        div.innerHTML = `
+          <div style="flex: 1;">
+            <i class="${item.icon}"></i> <strong>${item.name}</strong> - ${item.variation}
+            <div style="margin-top: 0.5rem;">
+              <strong>${formatPrice(item.pricePer1000)}/mil × <input type="number" class="cart-quantity-input" value="${item.quantity}" min="100" step="100" onchange="updateCartItemQuantity(${item.id}, this.value)"> = ${formatPrice(item.totalPrice)}</strong>
+            </div>
+            <div class="quantity-control" style="margin-top: 0.5rem;">
+              <button class="quantity-btn" onclick="event.stopPropagation(); updateItemQuantity(${item.id}, -100)">-100</button>
+              <button class="quantity-btn" onclick="event.stopPropagation(); updateItemQuantity(${item.id}, 100)">+100</button>
+              <button class="btn btn-danger" style="margin-left: 0.5rem; padding: 0.3rem 0.6rem; font-size: 0.8rem;" 
+                      onclick="event.stopPropagation(); removeFromCart(${item.id})">
+                <i class="fas fa-trash"></i> Remover
+              </button>
+            </div>
+          </div>
+        `;
+        cartItems.appendChild(div);
+      });
+      
+      // Calcula totais
+      const totals = calculateCartTotal();
+      
+      // Atualiza totais
+      cartTotalElement.textContent = formatPrice(totals.subtotal);
+      
+      if (discountApplied) {
+        discountAmountElement.textContent = formatPrice(totals.discount);
+        cartDiscountElement.style.display = "block";
+      } else {
+        cartDiscountElement.style.display = "none";
+      }
+      
+      finalTotalElement.textContent = formatPrice(totals.total);
+      
+      // Mantém o carrinho aberto se estava aberto antes da atualização
+      if (wasCartOpen) {
+        document.getElementById("cartDropdown").classList.add("show");
+      }
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        showAlert("Seu carrinho está vazio. Adicione serviços antes de finalizar.", "danger");
+        return;
+      }
+
+      const totals = calculateCartTotal();
+      
+      let itemsText = cart.map(item => 
+        `*${item.name} - ${item.variation}*\n` +
+        `Quantidade: ${item.quantity.toLocaleString()}\n` +
+        `Preço por mil: ${formatPrice(item.pricePer1000)}\n` +
+        `Subtotal: ${formatPrice(item.totalPrice)}\n`
+      ).join("\n");
+      
+      let message = `Olá, gostaria de adquirir os seguintes serviços:\n\n${itemsText}\n`;
+      message += `\n*Total: ${formatPrice(totals.total)}*\n\n`;
+      message += `Por favor, informe os próximos passos para finalizar a compra. Obrigado!`;
+      
+      const encodedMessage = encodeURIComponent(message);
+      window.open(`https://wa.me/+5584981518164?text=${encodedMessage}`, "_blank");
+    }
+
+    function openSupportWhatsApp() {
+      const supportMessage = encodeURIComponent("Olá, equipe Troço SMM! Preciso de ajuda com...");
+      window.open(`https://wa.me/+5584981518164?text=${supportMessage}`, "_blank");
+    }
+
+    function openTelegram() {
+      window.open(`https://t.me/suporte_trocodigital`, "_blank");
+    }
+
+    function openGroupWhatsApp() {
+      window.open(`https://chat.whatsapp.com/J9BeSYX88jzCO8CnEE8RGR`, "_blank");
+    }
+
+    function showAlert(message, type) {
+      const alert = document.createElement("div");
+      alert.className = `alert alert-${type}`;
+      alert.textContent = message;
+      document.body.appendChild(alert);
+      
+      setTimeout(() => {
+        alert.style.animation = "fadeOut 0.5s ease";
+        setTimeout(() => alert.remove(), 500);
+      }, 3000);
+    }
+
+    // Fechar carrinho ao clicar fora
+    document.addEventListener('click', function(event) {
+      const cartDropdown = document.getElementById('cartDropdown');
+      const cartToggle = document.querySelector('.cart-toggle');
+      
+      if (!cartDropdown.contains(event.target) && !cartToggle.contains(event.target)) {
+        cartDropdown.classList.remove('show');
+      }
+    });
+
+    // Inicializa a página quando carregada
+    document.addEventListener("DOMContentLoaded", () => {
+      initPage();
+      
+      const cards = document.querySelectorAll(".product-card");
+      cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+      });
+    });
+  </script>
+</body>
+</html>
