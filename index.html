@@ -139,7 +139,7 @@
       <div id="productsByCategory"></div>
     </div>
     <div id="productDetail" class="hidden">
-      <a class="top-back-link" onclick="goHome()"><i class="fas fa-arrow-left"></i> Voltar para produtos</a>
+      <a class="top-back-link" onclick="history.back()"><i class="fas fa-arrow-left"></i> Voltar para produtos</a>
       <div class="product-detail fade-in">
         <h2 id="productName"><i class="fas fa-info-circle"></i> Produto</h2>
         <p id="productDescription">Descrição do produto.</p>
@@ -161,7 +161,7 @@
         </div>
         <button class="btn btn-primary" onclick="addToCart()"><i class="fas fa-cart-plus"></i> Adicionar ao Carrinho</button>
       </div>
-      <a class="back-link" onclick="goHome()"><i class="fas fa-arrow-left"></i> Voltar para produtos</a>
+      <a class="back-link" onclick="history.back()"><i class="fas fa-arrow-left"></i> Voltar para produtos</a>
     </div>
   </div>
 
@@ -196,8 +196,76 @@
     function saveCart() { localStorage.setItem('trocoSMMCart', JSON.stringify(cart)); }
     function changeQuantity(change) { const input = document.getElementById('productQuantity'); let newValue = parseInt(input.value) + change; if (newValue < 100) newValue = 100; input.value = newValue; currentQuantity = newValue; updateTotalPrice(); }
     function showAlert(message, type) { const alert = document.createElement("div"); alert.className = `alert alert-${type}`; alert.textContent = message; document.body.appendChild(alert); setTimeout(() => { alert.style.animation = "fadeOut 0.5s ease"; setTimeout(() => alert.remove(), 500); }, 3000); }
-    function goHome() { document.getElementById("homePage").classList.remove("hidden"); document.getElementById("productDetail").classList.add("hidden"); }
     function toggleCart() { document.getElementById("cartDropdown").classList.toggle("show"); }
+
+    /**
+     * NOVA FUNÇÃO: Gerencia qual "página" (view) é exibida.
+     * Analisa a URL (hash) para decidir se mostra a home ou um produto.
+     */
+    function handleRoute() {
+        const hash = window.location.hash;
+        if (hash.startsWith('#product/')) {
+            const productId = parseInt(hash.replace('#product/', ''));
+            if (productId && !isNaN(productId)) {
+                renderProductDetail(productId);
+            }
+        } else {
+            renderHomePage();
+        }
+    }
+
+    /**
+     * NOVA FUNÇÃO: Exibe a página inicial.
+     */
+    function renderHomePage() {
+        document.getElementById("homePage").classList.remove("hidden");
+        document.getElementById("productDetail").classList.add("hidden");
+    }
+
+    /**
+     * NOVA FUNÇÃO: Exibe a página de detalhes do produto.
+     */
+    function renderProductDetail(id) {
+        const product = products.find(p => p.id === id); 
+        if (!product) {
+            goHome(); // Se o produto não existe, volta pra home
+            return;
+        }
+        selectedProductId = id;
+        document.getElementById("productName").innerHTML = `<i class="${product.icon}"></i> ${product.name}`;
+        document.getElementById("productDescription").textContent = product.description;
+        document.getElementById("productQuantity").value = 1000;
+        currentQuantity = 1000;
+        const variationsContainer = document.getElementById("variationsContainer");
+        variationsContainer.innerHTML = product.variations.map((v, i) => `<div class="variation-btn ${i === 0 ? 'active' : ''}" onclick="selectVariation(this, '${v.name}', ${v.price})"><strong>${v.name}</strong><br><small>${formatPrice(v.price)} por mil</small></div>`).join('');
+        
+        // Seleciona a primeira variação por padrão
+        if (product.variations.length > 0) {
+            selectVariation(variationsContainer.children[0], product.variations[0].name, product.variations[0].price);
+            renderQuantityOptions(product.variations[0].price);
+        }
+        
+        document.getElementById("homePage").classList.add("hidden");
+        document.getElementById("productDetail").classList.remove("hidden");
+    }
+
+    /**
+     * FUNÇÃO MODIFICADA: Navega para a página de um produto.
+     * Agora atualiza o histórico do navegador.
+     */
+    function showProduct(id) {
+        history.pushState({ productId: id }, `Produto ${id}`, `#product/${id}`);
+        handleRoute();
+    }
+    
+    /**
+     * FUNÇÃO MODIFICADA: Navega para a página inicial.
+     * Agora atualiza o histórico do navegador.
+     */
+    function goHome() {
+        history.pushState({ productId: null }, 'Home', '#');
+        handleRoute();
+    }
 
     function renderCategories() {
         const categories = [{ id: 'todos', name: 'Todos' }, ...[...new Set(products.map(p => p.category))].map(c => ({ id: c, name: c.charAt(0).toUpperCase() + c.slice(1) }))];
@@ -221,28 +289,18 @@
         grid.className = 'product-grid';
         grid.innerHTML = filteredProducts.map(product => {
             const minPrice = Math.min(...product.variations.map(v => v.price));
+            // A função do onclick foi alterada para showProduct(id)
             return `<div class="product-card fade-in" onclick="showProduct(${product.id})"><i class="${product.icon}"></i><h3>${product.name}</h3><p>${product.description}</p><div style="margin-top:auto; padding-top:1rem;"><span style="font-weight: bold;">A partir de ${formatPrice(minPrice)} por mil</span></div></div>`;
         }).join('');
         container.appendChild(grid);
     }
     
-    function showProduct(id) {
-        const product = products.find(p => p.id === id); if (!product) return;
-        selectedProductId = id;
-        document.getElementById("productName").innerHTML = `<i class="${product.icon}"></i> ${product.name}`;
-        document.getElementById("productDescription").textContent = product.description;
-        document.getElementById("productQuantity").value = 1000;
-        currentQuantity = 1000;
-        const variationsContainer = document.getElementById("variationsContainer");
-        variationsContainer.innerHTML = product.variations.map((v, i) => `<div class="variation-btn ${i === 0 ? 'active' : ''}" onclick="selectVariation(this, '${v.name}', ${v.price})"><strong>${v.name}</strong><br><small>${formatPrice(v.price)} por mil</small></div>`).join('');
-        selectVariation(variationsContainer.children[0], product.variations[0].name, product.variations[0].price);
-        renderQuantityOptions(product.variations[0].price);
-        document.getElementById("homePage").classList.add("hidden"); document.getElementById("productDetail").classList.remove("hidden");
-    }
-
     function selectVariation(element, variationName, price) {
-        document.querySelectorAll(".variation-btn").forEach(b => b.classList.remove("active"));
-        element.classList.add("active");
+        // Garante que o elemento exista antes de manipular suas classes
+        if(element) {
+            document.querySelectorAll(".variation-btn").forEach(b => b.classList.remove("active"));
+            element.classList.add("active");
+        }
         selectedVariationText = variationName; selectedVariationPrice = price;
         const product = products.find(p => p.id === selectedProductId);
         const variation = product.variations.find(v => v.name === variationName);
@@ -260,11 +318,13 @@
         document.querySelectorAll(".quantity-option").forEach(o => o.classList.remove("active"));
         const customContainer = document.getElementById("customQuantityContainer");
         if (value > 0) {
-            document.querySelector(`.quantity-option[onclick="selectQuantity(${value})"]`).classList.add("active");
+            const option = document.querySelector(`.quantity-option[onclick="selectQuantity(${value})"]`);
+            if(option) option.classList.add("active");
             document.getElementById("productQuantity").value = value;
             customContainer.style.display = "none";
         } else {
-            document.querySelector(`.quantity-option[onclick="selectQuantity(0)"]`).classList.add("active");
+            const option = document.querySelector(`.quantity-option[onclick="selectQuantity(0)"]`);
+            if(option) option.classList.add("active");
             customContainer.style.display = "flex";
         }
         currentQuantity = value > 0 ? value : parseInt(document.getElementById("customQuantityInput").value) || 1000;
@@ -390,6 +450,12 @@
             loadCart();
             renderCategories();
             renderProducts();
+            
+            // Adiciona o listener para o evento popstate (botão voltar/avançar do navegador)
+            window.addEventListener('popstate', handleRoute);
+            // Chama a rota inicial para carregar a view correta (caso o usuário entre com um # na URL)
+            handleRoute();
+
         } catch (error) {
             console.error("Erro ao carregar os dados:", error);
             document.querySelector('.container').innerHTML = "<h1>Erro ao carregar o site. Tente novamente mais tarde.</h1>";
